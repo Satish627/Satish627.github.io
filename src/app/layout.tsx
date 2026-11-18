@@ -1,23 +1,34 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Space_Grotesk } from "next/font/google";
-import { AnimatedBackground } from "@/src/components/animated-background";
-import { Navbar } from "@/src/components/navbar";
-import { ThemeProvider } from "@/src/components/theme-provider";
+import { Press_Start_2P, VT323 } from "next/font/google";
 import "./globals.css";
 
-const fontSans = Space_Grotesk({
-  variable: "--font-space-grotesk",
+/** Blocky pixel font: big titles and buttons only. */
+const pixel = Press_Start_2P({
+  variable: "--font-press-start",
+  weight: "400",
   subsets: ["latin"],
 });
 
-const fontMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+/** Readable pixel font: everything else. */
+const retro = VT323({
+  variable: "--font-vt323",
+  weight: "400",
   subsets: ["latin"],
 });
+
+const description =
+  "Satish Gurung is a software developer in Copenhagen building modern web applications.";
 
 export const metadata: Metadata = {
-  title: "Satish Portfolio",
-  description: "Portfolio website",
+  metadataBase: new URL("https://satish627.github.io"),
+  title: "Satish Gurung — Software Developer",
+  description,
+  openGraph: {
+    title: "Satish Gurung — Software Developer",
+    description,
+    url: "/",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
@@ -26,23 +37,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${fontSans.variable} ${fontMono.variable} overflow-x-hidden antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem={false}
-          disableTransitionOnChange
-        >
-          <AnimatedBackground />
-          <div className="relative z-10">
-            <Navbar />
-            {children}
-          </div>
-        </ThemeProvider>
-      </body>
+    <html lang="en" className={`${pixel.variable} ${retro.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
