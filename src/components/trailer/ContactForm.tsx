@@ -4,9 +4,9 @@ import { useState } from "react";
 
 const ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT;
 
-const labelClass = "text-xl tracking-[0.06em]";
+const labelClass = "text-xs font-extrabold tracking-[0.22em] text-haze";
 const fieldClass =
-  "mt-1.5 w-full border-[3px] border-ink bg-[#F6FBFE] p-3 text-2xl leading-none text-ink outline-none focus:border-rust";
+  "mt-1.5 block w-full border-2 border-white/20 bg-night px-3.5 text-base tracking-normal text-white outline-none placeholder:text-white/40 focus:border-pink";
 
 export function ContactForm({ email }: { email: string }) {
   const [status, setStatus] = useState<string | null>(null);
@@ -23,7 +23,7 @@ export function ContactForm({ email }: { email: string }) {
     // Honeypot: real visitors never fill the hidden field.
     if (String(data.get("website") ?? "").trim()) {
       form.reset();
-      setStatus("Message sent. Thanks for reaching out!");
+      setStatus("Invite sent. Thanks for reaching out!");
       return;
     }
 
@@ -48,7 +48,7 @@ export function ContactForm({ email }: { email: string }) {
         return;
       }
       form.reset();
-      setStatus("Message sent. Thanks for reaching out!");
+      setStatus("Invite sent. Thanks for reaching out!");
     } catch {
       setStatus("Network error. Try emailing me instead.");
     } finally {
@@ -59,11 +59,11 @@ export function ContactForm({ email }: { email: string }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-4 border-4 border-ink bg-white p-7 text-ink shadow-[8px_8px_0_var(--color-coin)]"
+      className="hard-shadow flex flex-col gap-4 border-2 border-pink bg-panel/95 p-7"
     >
       <label className={labelClass}>
         NAME
-        <input name="name" required autoComplete="name" placeholder="Your name" className={fieldClass} />
+        <input name="name" required autoComplete="name" placeholder="Your name" className={`${fieldClass} min-h-12`} />
       </label>
       <label className={labelClass}>
         EMAIL
@@ -73,7 +73,7 @@ export function ContactForm({ email }: { email: string }) {
           required
           autoComplete="email"
           placeholder="you@company.com"
-          className={fieldClass}
+          className={`${fieldClass} min-h-12`}
         />
       </label>
       <label className={labelClass}>
@@ -81,18 +81,18 @@ export function ContactForm({ email }: { email: string }) {
         <textarea
           name="message"
           required
-          rows={4}
+          rows={5}
           placeholder="Say hi, or tell me about your project"
-          className={`${fieldClass} resize-none leading-tight`}
+          className={`${fieldClass} resize-none py-3`}
         />
       </label>
       <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
       <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={sending} className="pixel-button bg-coin text-xs disabled:opacity-60">
-          {sending ? "SENDING…" : "INSERT COIN · SEND"}
+        <button type="submit" disabled={sending} className="skew-btn hard-shadow-sm cursor-pointer bg-pink disabled:opacity-60">
+          {sending ? "SENDING…" : "SEND INVITE"}
         </button>
         {status && (
-          <p role="status" className="text-xl">
+          <p role="status" className="text-sm text-mist">
             {status}
           </p>
         )}
